@@ -31,14 +31,13 @@ while True:
                 best_im = im
                 print global_index
             break
-    first_flag = False
-    cv2.imshow(winName, t_plus)
-
     # Read next image
     t_minus = t
     t = t_plus
     im = cam.read()[1]
     t_plus = cv2.cvtColor(im, cv2.COLOR_RGB2GRAY)
+    
+    cv2.imshow(winName, im)
 
     im_count += 1
 
