@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<header>
+	
+</header>
+<body>
+	<div>Test</div>
+	<video id="video1" autoplay></video>
+	<canvas style="display:none;"></canvas>
+	<button onclick="stopVideo();">Stop</button>
+	<script>
+		var video = document.getElementsByTagName('video');
+	  	
+	  	var canvas = document.getElementsByTagName('canvas');
+	  	var localMediaStream = null;
+
+	  function stopVideo(){
+	  	
+	  	localMediaStream.stop();
+	  }
+
+	  var errorCallback = function(e) {
+	    console.log('Reeeejected!', e);
+	    alert("errorCallback");
+	  };
+
+	  var vgaConstraints = {
+		  video: {
+		    mandatory: {
+		      maxWidth: 640,
+		      maxHeight: 360
+		    }
+		  }
+		};		
+	  // Not showing vendor prefixes.
+	  navigator.webkitGetUserMedia(vgaConstraints, successCallback, errorCallback);
+
+	  function successCallback(stream) {
+	  	localMediaStream = stream;
+	    var video = document.getElementById('video1');
+	    video.src = window.URL.createObjectURL(localMediaStream);
+
+	    // Note: onloadedmetadata doesn't fire in Chrome when using it with getUserMedia.
+	    // See crbug.com/110938.
+	    video.onloadedmetadata = function(e) {
+	      // Ready to go. Do some stuff.
+	    };
+	  }
+	</script>
+</body>
+</html>
