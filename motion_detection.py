@@ -15,22 +15,23 @@ t_minus = cv2.cvtColor(cam.read()[1], cv2.COLOR_RGB2GRAY)
 t = cv2.cvtColor(cam.read()[1], cv2.COLOR_RGB2GRAY)
 t_plus = cv2.cvtColor(cam.read()[1], cv2.COLOR_RGB2GRAY)
 
-global_index = 1000
+global_index = len(t)
 best_im = None
 im = None
 
+im_count = 0
 while True:
     diff_img = diffImg(t_minus, t, t_plus)
-    for i in range(len(diff_img)):
+    for i in range(global_index):
         sorted_img = sorted(diff_img[i], reverse=True)
-        if sorted_img[9] > 20:
+        if sorted_img[19] > 20:
             highest_index = i
-            if highest_index < global_index:
+            if highest_index < global_index and im_count > 10:
                 global_index = highest_index
                 best_im = im
                 print global_index
             break
-
+    first_flag = False
     cv2.imshow(winName, t_plus)
 
     # Read next image
@@ -38,12 +39,14 @@ while True:
     t = t_plus
     im = cam.read()[1]
     t_plus = cv2.cvtColor(im, cv2.COLOR_RGB2GRAY)
-    
+
+    im_count += 1
+
     key = cv2.waitKey(10)
     if key == 27:
         cv2.destroyWindow(winName)
         break
 
-cv2.imwrite('test.png', best_im)
+cv2.imwrite('best_photo.png', best_im)
 
 print "Goodbye"
