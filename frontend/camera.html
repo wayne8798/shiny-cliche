@@ -5,14 +5,28 @@
 </header>
 <body>
 	<div>Test</div>
-	<video id="video1" autoplay></video>
-	<canvas style="display:none;"></canvas>
 	<button onclick="stopVideo();">Stop</button>
+	<button onclick="snapshot();">Snap</button>
+	<video id="video1" autoplay></video>
+	<div>
+		<canvas id="canvas1" width="640" height="480" style="display:none" ></canvas>
+	</div>
+	
+	<img id="img1">
 	<script>
-		var video = document.getElementsByTagName('video');
-	  	
-	  	var canvas = document.getElementsByTagName('canvas');
+		var video = document.getElementById('video1');
+	  	var canvas = document.getElementById('canvas1');
+	  	var image = document.getElementById('img1');
+	  	var ctx = canvas.getContext('2d');
 	  	var localMediaStream = null;
+
+	  	function snapshot(){
+	  		if(localMediaStream)
+	  		{
+	  			ctx.drawImage(video,0,0,640,480);
+	  			image.src= canvas.toDataURL('image/webp');
+	  		}
+	  	}
 
 	  function stopVideo(){
 	  	
@@ -33,7 +47,7 @@
 		  }
 		};		
 	  // Not showing vendor prefixes.
-	  navigator.webkitGetUserMedia(vgaConstraints, successCallback, errorCallback);
+	  navigator.webkitGetUserMedia({video:true}, successCallback, errorCallback);
 
 	  function successCallback(stream) {
 	  	localMediaStream = stream;
