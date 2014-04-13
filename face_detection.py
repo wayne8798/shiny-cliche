@@ -10,11 +10,5 @@ def detect(path):
     rects[:, 2:] += rects[:, :2]
     return rects, img
 
-def box(rects, img):
-    for x1, y1, x2, y2 in rects:
-        cv2.rectangle(img, (x1, y1), (x2, y2), (127, 255, 0), 2)
-    cv2.imwrite('detected.jpg', img);
-
 rects, img = detect("img/frame1.png")
 print rects
-box(rects, img)
